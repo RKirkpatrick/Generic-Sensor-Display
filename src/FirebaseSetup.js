@@ -16,12 +16,12 @@ import withReactContent from "sweetalert2-react-content";
 const SwalReact = withReactContent(Swal);
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAxdGbBiX_L9uIu0KotlTbWzgH9roIVnls",
-  authDomain: "generic-sensor-display.firebaseapp.com",
-  projectId: "generic-sensor-display",
-  storageBucket: "generic-sensor-display.appspot.com",
-  messagingSenderId: "78111896061",
-  appId: "1:78111896061:web:bfc529f670583b2160e994"
+	apiKey: "AIzaSyAxdGbBiX_L9uIu0KotlTbWzgH9roIVnls",
+	authDomain: "generic-sensor-display.firebaseapp.com",
+	projectId: "generic-sensor-display",
+	storageBucket: "generic-sensor-display.appspot.com",
+	messagingSenderId: "78111896061",
+	appId: "1:78111896061:web:bfc529f670583b2160e994",
 };
 
 const devConfig = {};
