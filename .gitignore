@@ -28,4 +28,3 @@ Firebase/.DS_Store
 *.scssc
 *.cache
 node_modules/
-package-lock.json
