@@ -25,12 +25,14 @@ const Header = ({ organization, setAuthUser }) => {
 			<div className="top-menu">
 				<div className="container">
 					<div className="row">
-						<div className="col-md-2">
+						<div className="col-md-3">
 							<div id="tp-logo">
-								<Link to={`/${organizationUrl}/facilities`}>Raedam</Link>
+								<Link to={`/${organizationUrl}/facilities`}>
+									Open Parking Manager
+								</Link>
 							</div>
 						</div>
-						<div className="col-md-10 text-right menu-1">
+						<div className="col-md-9 text-right menu-1">
 							<ul>
 								<li className="active">
 									<Link to={`/${organizationUrl}/facilities`}>Facilities</Link>
