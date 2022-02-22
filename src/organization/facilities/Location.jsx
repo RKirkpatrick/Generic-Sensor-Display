@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import { useHistory } from "react-router-dom";
+import Card from "../../common/Card";
+import SwalForm, { SwalFail, SwalSuccess } from "../../common/SweetAlert";
 import { database } from "../../FirebaseSetup";
-
-const SwalReact = withReactContent(Swal);
 
 const Location = ({ organization, title = "", name, locationType }) => {
 	const [free, setFree] = useState(0);
@@ -13,6 +11,7 @@ const Location = ({ organization, title = "", name, locationType }) => {
 	const [enabled, setEnabled] = useState(true);
 	const [locationEnabled, setLocationEnabled] = useState(true);
 	const { path, url, params } = useRouteMatch();
+	const history = useHistory();
 
 	function getLocationCapacity() {
 		database
@@ -62,92 +61,99 @@ const Location = ({ organization, title = "", name, locationType }) => {
 	}
 
 	function rightClickHandler(event) {
-		event.preventDefault();
+		if (locationType == "location") {
+			event.preventDefault();
 
-		const popupHTML = (
-			<>
-				<h4>Enable/Disable: </h4>
-				<button
-					type="button"
-					className="btn btn-success"
-					onClick={() => {
-						updateDatabase(true);
-					}}
-				>
-					Enable
-				</button>
-				<button
-					type="button"
-					className="btn btn-danger"
-					onClick={() => {
-						updateDatabase(false);
-					}}
-				>
-					Disable
-				</button>
-				<br />
-			</>
-		);
+			const popupHTML = (
+				<>
+					<label class="free-label" htmlFor="free">
+						Spots Free
+					</label>
+					<input
+						type="number"
+						id="free"
+						min="0"
+						max={total}
+						defaultValue={free}
+					/>
+					<br />
+					<label class="total-label" htmlFor="total">
+						Capacity
+					</label>
+					<input type="number" id="total" min="0" defaultValue={total} />
+					<br />
+				</>
+			);
 
-		SwalReact.fire({
-			title: title,
-			html: popupHTML,
-			showCancelButton: true,
-			focusConfirm: false,
-			scrollbarPadding: false,
-		});
+			SwalForm(popupHTML, updateDatabase);
+		}
 
-		// Update database with new selections
-		function updateDatabase(enable) {
+		function updateDatabase({ free, total }) {
 			let newData;
 			let successMsg;
 			if (locationType == "location") {
 				newData = {
-					Active: enable,
+					[`Capacity.Available`]: parseInt(free.value),
+					[`Capacity.Capacity`]: parseInt(total.value),
 				};
-				successMsg = `${title} ${enable ? "enabled" : "disabled"} successfully`;
-			} else if (locationType == "sublocation") {
-				newData = {
-					[`Floor Data.${name}.Active`]: enable,
-				};
-				successMsg = `${name} in ${title} ${
-					enable ? "enabled" : "disabled"
-				} successfully`;
-			}
+				successMsg = `${title} updated successfully`;
 
-			database
-				.collection("Companies")
-				.doc(organization)
-				.collection("Data")
-				.doc(title ? title : name)
-				.update(newData)
-				.then(() => {
-					SwalReact.fire({
-						title: "Success",
-						text: successMsg,
-						icon: "success",
-						confirmButtonText: "Close",
+				const abortController = new AbortController();
+				database
+					.collection("Companies")
+					.doc(organization)
+					.collection("Data")
+					.doc(title ? title : name)
+					.update(newData)
+					.then(() => {
+						SwalSuccess(successMsg);
+						if (!locationEnabled && locationType == "sublocation") {
+							SwalFail(`Can't update ${name} while ${title} is disabled`);
+						}
+					})
+					.catch((error) => {
+						SwalFail("Something went wrong while updating the database", error);
 					});
-					if (!locationEnabled && locationType == "sublocation") {
-						SwalReact.fire({
-							title: "Error",
-							text: `Can't update ${name} while ${title} is disabled`,
-							icon: "error",
-							confirmButtonText: "Close",
-						});
-					}
-				})
-				.catch((error) => {
-					console.log("Error:", error);
-					//TODO log to firebase logger
-					SwalReact.fire({
-						title: "Error",
-						text: "Something went wrong while updating the database",
-						icon: "error",
-						confirmButtonText: "Close",
-					});
-				});
+				return () => abortController.abort();
+			}
 		}
+	}
+
+	// Update database with new selections
+	function toggleHandler(enable) {
+		let newData;
+		let successMsg;
+		if (locationType == "location") {
+			newData = {
+				Active: enable,
+			};
+			successMsg = `${title} ${enable ? "enabled" : "disabled"} successfully`;
+		} else if (locationType == "sublocation") {
+			newData = {
+				[`Floor Data.${name}.Active`]: enable,
+			};
+			successMsg = `${name} in ${title} ${
+				enable ? "enabled" : "disabled"
+			} successfully`;
+		}
+
+		const abortController = new AbortController();
+		database
+			.collection("Companies")
+			.doc(organization)
+			.collection("Data")
+			.doc(title ? title : name)
+			.update(newData)
+			.then(() => {
+				// SwalSuccess(successMsg);
+				if (!locationEnabled && locationType == "sublocation") {
+					SwalFail(`Can't update ${name} while ${title} is disabled`);
+				}
+			})
+			.catch((error) => {
+				SwalFail("Something went wrong while updating the database", error);
+			});
+		return () => abortController.abort();
 	}
 
 	useEffect(() => {
@@ -161,49 +167,20 @@ const Location = ({ organization, title = "", name, locationType }) => {
 		return () => abortController.abort();
 	}, [locationType]);
 
-	useEffect(() => {
-		const abortController = new AbortController();
-
-		return () => abortController.abort();
-	}, [locationType]);
-
 	return (
-		<Link to={`${url}/${name.replaceAll(" ", "-")}`}>
-			<div className="card-btn panel panel-default mb-2">
-				<div
-					className={`panel-body container ${
-						enabled ? "bg-success" : "bg-danger"
-					}`}
-					onContextMenu={rightClickHandler}
-				>
-					<div className="d-flex justify-content-between row">
-						<table className="table" style={{ margin: "0" }}>
-							<tbody>
-								<tr>
-									<td>
-										<h3
-											className="text-success text-left"
-											style={{ margin: "0 0 0 15px" }}
-										>
-											{name}
-										</h3>
-									</td>
-									<td>
-										{/* TODO Spots free is spilling over the side. Fixed by adding extra margin */}
-										<h3
-											className="text-success text-right"
-											style={{ margin: "0 45px 0 0" }}
-										>
-											Spots Free: {free}/{total}
-										</h3>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</Link>
+		<Card
+			leftClickHandler={() => {
+				history.push(`${url}/${name.replaceAll(" ", "-")}`);
+			}}
+			toggleHandler={toggleHandler}
+			enabled={enabled}
+			rightClickHandler={rightClickHandler}
+		>
+			<h3 className="text-success">{name}</h3>
+			<h3 className="text-success">
+				Spots Free: {free}/{total}
+			</h3>
+		</Card>
 	);
 };
 

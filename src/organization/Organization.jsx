@@ -9,6 +9,8 @@ import Price from "./Price";
 import Occupancy from "./occupancy";
 import Profile from "../profile";
 import { database } from "../FirebaseSetup";
+import NewLocation from "./NewLocation";
+import SwalForm from "../common/SweetAlert";
 
 const Organization = ({ organization, authUser }) => {
 	const { path, url, params } = useRouteMatch();
@@ -137,6 +139,38 @@ const Organization = ({ organization, authUser }) => {
 			});
 	}
 
+	const addLocationHtml = (
+		<>
+			<label htmlFor="name">Name</label>
+			<input
+				id="name"
+				type="text"
+				name="name"
+				placeholder="Location Name"
+				required
+			/>
+			<label htmlFor="address">Address</label>
+			<input
+				id="address"
+				type="text"
+				name="address"
+				placeholder="Street Address"
+				required
+			/>
+		</>
+	);
+
+	function createLocation({ name, address }) {
+		database
+			.collection("Companies")
+			.doc(organization.replaceAll("-", " "))
+			.collection("Data")
+			.doc(name.value)
+			.set({ name: name.value, address: address.value });
+		//update database with new Location
+		// Companies/ organization / new Location
+	}
+
 	return (
 		<>
 			<Switch>
@@ -148,11 +182,19 @@ const Organization = ({ organization, authUser }) => {
 				<Route path={`${path}/facilities/:locationName/:subLocationName`}>
 					<SpotMap organization={organization} />
 				</Route>
+				<Route path={`${path}/facilities/new-location`}>
+					<NewLocation />
+				</Route>
 				<Route path={`${path}/facilities/:locationName`}>
 					<CardList getJsx={getSubLocations} />
 				</Route>
 				<Route path={`${path}/facilities`}>
-					<CardList getJsx={getLocations} />
+					<CardList
+						getJsx={getLocations}
+						addFunction={() => {
+							SwalForm(addLocationHtml, createLocation);
+						}}
+					/>
 				</Route>
 				<Route path={`${path}/occupancy`}>
 					<Occupancy organization={organization} />

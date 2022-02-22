@@ -27,4 +27,6 @@ Firebase/.DS_Store
 *.cache
 *.scssc
 *.cache
+
 node_modules/
+firebase-debug.log

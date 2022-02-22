@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router";
 
-const CardList = ({ getJsx }) => {
+const CardList = ({ getJsx, addFunction }) => {
 	const { path, url, params } = useRouteMatch();
 	const [jsx, setJsx] = useState([]);
 	const [title, setTitle] = useState("");
@@ -23,6 +23,13 @@ const CardList = ({ getJsx }) => {
 				>
 					{title}
 				</h1>
+				{addFunction ? (
+					<button className="btn btn-primary" onClick={addFunction}>
+						Add to {title}
+					</button>
+				) : (
+					<></>
+				)}
 				<div>{jsx}</div>
 			</div>
 		</div>
