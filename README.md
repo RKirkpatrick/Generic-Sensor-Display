@@ -1,2 +1,2 @@
-# RaedamWeb
-Enforcement Website for Raedam, Inc.
+# GenericWeb
+Enforcement Website for Generic, Inc.

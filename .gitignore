@@ -27,6 +27,6 @@ Firebase/.DS_Store
 *.cache
 *.scssc
 *.cache
+
 node_modules/
-package-lock.json
 firebase-debug.log

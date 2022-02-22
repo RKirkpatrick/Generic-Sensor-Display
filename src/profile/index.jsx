@@ -36,15 +36,13 @@ const Profile = ({ organization, authUser }) => {
 			.collection("Users")
 			.doc("Companies")
 			.collection(organization)
-			.where("UUID", "==", authUser.user.uid)
+			.doc(authUser.user.uid)
 			.get()
-			.then((querySnapshot) => {
+			.then((doc) => {
 				let result = null;
-				querySnapshot.forEach((doc) => {
-					if (doc.data().Name && doc.data().Role) {
-						result = doc.data();
-					}
-				});
+				if (doc.data().Name && doc.data().Role) {
+					result = doc.data();
+				}
 				return result;
 			})
 			.catch((error) => {

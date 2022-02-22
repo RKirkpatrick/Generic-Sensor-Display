@@ -16,14 +16,12 @@ import withReactContent from "sweetalert2-react-content";
 const SwalReact = withReactContent(Swal);
 
 const firebaseConfig = {
-	apiKey: "AIzaSyCKghNDOPOufY-8SYVGW4xpOeZC3fDVZko",
-	authDomain: "theory-parking.firebaseapp.com",
-	databaseURL: "https://theory-parking.firebaseio.com",
-	projectId: "theory-parking",
-	storageBucket: "theory-parking.appspot.com",
-	messagingSenderId: "192548003681",
-	appId: "1:192548003681:web:1f092e58a62891359caf20",
-	measurementId: "G-D9YWC0BFVD",
+	apiKey: "AIzaSyAxdGbBiX_L9uIu0KotlTbWzgH9roIVnls",
+	authDomain: "generic-sensor-display.firebaseapp.com",
+	projectId: "generic-sensor-display",
+	storageBucket: "generic-sensor-display.appspot.com",
+	messagingSenderId: "78111896061",
+	appId: "1:78111896061:web:bfc529f670583b2160e994",
 };
 
 const devConfig = {};
