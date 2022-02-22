@@ -1,6 +1,9 @@
+//TODO Finish add button for locations, sublocations, and sensors
+//TODO replace sweetalert popups with new sweetalert component
+
 //TODO fix async memory leak in spot/spotmap
 //TODO Capacity dynamically changing
-//TODO Account
+//TODO Profile image
 //TODO Summary
 //TODO Update Chart
 //TODO Delete extra bootstrap files

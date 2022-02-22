@@ -28,7 +28,8 @@ const Login = ({ setAuthUser }) => {
 							<div className="col-md-12 col-md-offset-0">
 								<div className="">
 									{/*TODO animate box*/}
-									<h2>Raedam for Business Clients</h2>
+									<h2>Open Parking Manager for Businesses</h2>
+									<h3>by Raedam</h3>
 									<br />
 									<h3 style={{ color: "black" }}>Client Login</h3>
 								</div>

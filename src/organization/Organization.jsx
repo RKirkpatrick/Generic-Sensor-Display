@@ -32,7 +32,7 @@ const Organization = ({ organization, authUser }) => {
 				setPageTitle(`Data log for spot ${urlParams.spotId}`);
 				let temp = [];
 				if (!collection.size) {
-					temp.push(<NoData />);
+					temp.push(<NoData key={0} />);
 					setList(temp);
 					return;
 				}

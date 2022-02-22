@@ -23,7 +23,6 @@ const Card = ({
 			>
 				{children}
 			</div>
-			{/* </Link> */}
 			{/* Toggle only changes when the database is updated */}
 			{toggleHandler && (
 				<div className="toggle normal" onClick={toggle}>
