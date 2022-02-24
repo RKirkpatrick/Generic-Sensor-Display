@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router";
 
+import NoData from "./NoData";
+
 const CardList = ({ getJsx, addFunction }) => {
 	const { path, url, params } = useRouteMatch();
 	const [jsx, setJsx] = useState([]);
@@ -30,7 +32,7 @@ const CardList = ({ getJsx, addFunction }) => {
 				) : (
 					<></>
 				)}
-				<div>{jsx}</div>
+				<div>{jsx.length > 0 ? jsx : <NoData />}</div>
 			</div>
 		</div>
 	);

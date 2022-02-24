@@ -1,4 +1,5 @@
-import { Route, Switch, useRouteMatch } from "react-router";
+import { Route, Switch, useRouteMatch, useHistory } from "react-router";
+
 import CardList from "../common/CardList";
 import ComingSoon from "../common/ComingSoon";
 import NoData from "../common/NoData";
@@ -10,10 +11,10 @@ import Occupancy from "./occupancy";
 import Profile from "../profile";
 import { database } from "../FirebaseSetup";
 import NewLocation from "./NewLocation";
-import SwalForm from "../common/SweetAlert";
 
 const Organization = ({ organization, authUser }) => {
 	const { path, url, params } = useRouteMatch();
+	const history = useHistory();
 
 	function getLogs(setList, setPageTitle, urlParams) {
 		const locationName = urlParams.locationName.replaceAll("-", " ");
@@ -139,38 +140,6 @@ const Organization = ({ organization, authUser }) => {
 			});
 	}
 
-	const addLocationHtml = (
-		<>
-			<label htmlFor="name">Name</label>
-			<input
-				id="name"
-				type="text"
-				name="name"
-				placeholder="Location Name"
-				required
-			/>
-			<label htmlFor="address">Address</label>
-			<input
-				id="address"
-				type="text"
-				name="address"
-				placeholder="Street Address"
-				required
-			/>
-		</>
-	);
-
-	function createLocation({ name, address }) {
-		database
-			.collection("Companies")
-			.doc(organization.replaceAll("-", " "))
-			.collection("Data")
-			.doc(name.value)
-			.set({ name: name.value, address: address.value });
-		//update database with new Location
-		// Companies/ organization / new Location
-	}
-
 	return (
 		<>
 			<Switch>
@@ -192,7 +161,7 @@ const Organization = ({ organization, authUser }) => {
 					<CardList
 						getJsx={getLocations}
 						addFunction={() => {
-							SwalForm(addLocationHtml, createLocation);
+							history.push(`/${params.organization}/facilities/new-location`);
 						}}
 					/>
 				</Route>
@@ -210,6 +179,10 @@ const Organization = ({ organization, authUser }) => {
 				</Route>
 				<Route path={`${path}/messages`}>
 					<ComingSoon />
+				</Route>
+				<Route>
+					{/* TODO replace with 404 */}
+					<NoData />
 				</Route>
 			</Switch>
 		</>

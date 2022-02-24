@@ -1,5 +1,10 @@
 //TODO Finish add button for locations, sublocations, and sensors
 //TODO replace sweetalert popups with new sweetalert component
+//TODO fix mobile menu and replace top menu with flexbox
+//TODO render cardlist using children instead of getJsx
+//TODO fix new location form error after submission
+//TODO add loading to ui so placeholder data isn't flashing on screen before it is fully loaded
+//TODO replace organization pass down with url parameter
 
 //TODO fix async memory leak in spot/spotmap
 //TODO Capacity dynamically changing

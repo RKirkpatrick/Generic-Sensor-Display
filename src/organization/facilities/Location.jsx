@@ -66,7 +66,7 @@ const Location = ({ organization, title = "", name, locationType }) => {
 
 			const popupHTML = (
 				<>
-					<label class="free-label" htmlFor="free">
+					<label className="free-label" htmlFor="free">
 						Spots Free
 					</label>
 					<input
@@ -77,7 +77,7 @@ const Location = ({ organization, title = "", name, locationType }) => {
 						defaultValue={free}
 					/>
 					<br />
-					<label class="total-label" htmlFor="total">
+					<label className="total-label" htmlFor="total">
 						Capacity
 					</label>
 					<input type="number" id="total" min="0" defaultValue={total} />
