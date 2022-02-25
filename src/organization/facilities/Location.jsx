@@ -120,20 +120,20 @@ const Location = ({ organization, title = "", name, locationType }) => {
 	}
 
 	// Update database with new selections
-	function toggleHandler(enable) {
+	function toggleHandler(isEnabled) {
 		let newData;
 		let successMsg;
 		if (locationType == "location") {
 			newData = {
-				Active: enable,
+				Active: isEnabled,
 			};
-			successMsg = `${title} ${enable ? "enabled" : "disabled"} successfully`;
+			successMsg = `${name} ${isEnabled ? "enabled" : "disabled"} successfully`;
 		} else if (locationType == "sublocation") {
 			newData = {
-				[`Floor Data.${name}.Active`]: enable,
+				[`Floor Data.${name}.Active`]: isEnabled,
 			};
 			successMsg = `${name} in ${title} ${
-				enable ? "enabled" : "disabled"
+				isEnabled ? "enabled" : "disabled"
 			} successfully`;
 		}
 
@@ -169,6 +169,7 @@ const Location = ({ organization, title = "", name, locationType }) => {
 
 	return (
 		<Card
+			id={name}
 			leftClickHandler={() => {
 				history.push(`${url}/${name.replaceAll(" ", "-")}`);
 			}}

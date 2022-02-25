@@ -270,10 +270,10 @@ label.toggle-item:before {
 		0px 1px 2px 0px rgba(151, 151, 151, 0.2);
 }
 
-#normal:checked + label {
+.normal input:checked + label {
 	background: #4caf50;
 }
-#normal:checked + label:before {
+.normal input:checked + label:before {
 	left: 4em;
 }
 
@@ -306,16 +306,16 @@ label.toggle-item:before {
 	transform: rotate(45deg) translate(20px, 11px);
 }
 
-#checkcross:checked + label .check {
+.checkcross input:checked + label .check {
 	left: 68px;
 	transform: rotate(360deg);
 	background: #c34a4a;
 }
-#checkcross:checked + label .check:before {
+.checkcross input:checked + label .check:before {
 	width: 27px;
 	transform: rotate(-45deg) translate(-8px, 18px);
 }
-#checkcross:checked + label .check:after {
+.checkcross input:checked + label .check:after {
 	width: 27px;
 	transform: rotate(45deg) translate(18px, 8px);
 }

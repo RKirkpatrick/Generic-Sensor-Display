@@ -1,5 +1,6 @@
 const Card = ({
 	children,
+	id,
 	leftClickHandler,
 	toggleHandler,
 	enabled,
@@ -27,7 +28,7 @@ const Card = ({
 			{toggleHandler && (
 				<div className="toggle normal" onClick={toggle}>
 					<input
-						id="normal"
+						id={id}
 						type="checkbox"
 						readOnly
 						checked={enabled}
@@ -35,11 +36,11 @@ const Card = ({
 							e.preventDefault();
 						}}
 					></input>
-					<label className="toggle-item" htmlFor="normal"></label>
+					<label className="toggle-item" htmlFor={id}></label>
 				</div>
 				// <div className="toggle checkcross" onClick={toggleHandler}>
 				// 	<input
-				// 		id="checkcross"
+				// 		id={id}
 				// 		type="checkbox"
 				// 		readOnly
 				// 		checked={enabled}
@@ -47,7 +48,7 @@ const Card = ({
 				// 			e.preventDefault();
 				// 		}}
 				// 	></input>
-				// 	<label className="toggle-item" htmlFor="checkcross">
+				// 	<label className="toggle-item" htmlFor={id}>
 				// 		<div className="check"></div>
 				// 	</label>
 				// </div>
